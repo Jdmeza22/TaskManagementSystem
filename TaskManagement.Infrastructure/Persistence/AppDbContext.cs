@@ -1,7 +1,9 @@
 ﻿
 
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using TaskManagement.Domain.Entities;
+using TaskManagement.Domain.Enums;
 
 namespace TaskManagement.Infrastructure.Persistence;
 
@@ -37,11 +39,16 @@ public class AppDbContext(DbContextOptions<AppDbContext> options) : DbContext( o
                 .IsRequired()
                 .HasMaxLength(200);
 
-            entity.Property(t => t.Status)
-                .IsRequired();
+            entity.Property(e => e.Status)
+               .HasConversion(new EnumToStringConverter<ETaskStatus>())
+               .HasMaxLength(50)
+               .IsRequired();
 
             entity.Property(t => t.CreatedAt)
                 .IsRequired();
+
+            entity.Property(e => e.AdditionalInfo)
+                .HasColumnType("NVARCHAR(MAX)");
 
             entity.HasOne<User>()
                 .WithMany()

@@ -10,6 +10,8 @@ public class TaskItem
     public ETaskStatus Status { get; private set; }
     public Guid UserId { get; private set; }
     public DateTime CreatedAt { get; private set; }
+    public string? AdditionalInfo { get; set; } 
+
 
     private TaskItem() { }
 
