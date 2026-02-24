@@ -11,9 +11,9 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Controllers\" />
     <Folder Include="Middleware\" />
     <Folder Include="Extension\" />
+    <Folder Include="Controllers\" />
   </ItemGroup>
 
 </Project>
