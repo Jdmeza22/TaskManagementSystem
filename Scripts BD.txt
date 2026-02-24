@@ -1,0 +1,93 @@
+--- Consulta tareas por un usuario
+
+USE [TaskManagementDb]
+GO
+/****** Object:  StoredProcedure [dbo].[GetUserTasks]    Script Date: 2/24/2026 2:21:17 PM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+
+-- =============================================
+-- Author:      Jesús Meza
+-- Create date: 2026-02-24
+-- Description: Obtiene las tareas de un usuario
+-- =============================================
+ALTER PROCEDURE [dbo].[GetUserTasks]
+    @UserId UNIQUEIDENTIFIER,       
+    @Status Varchar(25) = NULL   
+AS
+BEGIN
+
+    SET NOCOUNT ON;
+
+    SELECT 
+        Id,
+        UserId,
+        Title,
+        Status,
+        CreatedAt
+    FROM Tasks
+    WHERE UserId = @UserId
+        AND (@Status = '0' OR Status = @Status)
+    ORDER BY CreatedAt DESC;
+END
+
+--- Script creacion tabla Task
+
+USE [TaskManagementDb]
+GO
+
+/****** Object:  Table [dbo].[Tasks]    Script Date: 2/24/2026 3:36:01 PM ******/
+SET ANSI_NULLS ON
+GO
+
+SET QUOTED_IDENTIFIER ON
+GO
+
+CREATE TABLE [dbo].[Tasks](
+	[Id] [uniqueidentifier] NOT NULL,
+	[Title] [nvarchar](200) NOT NULL,
+	[Description] [nvarchar](max) NULL,
+	[Status] [nvarchar](50) NOT NULL,
+	[UserId] [uniqueidentifier] NOT NULL,
+	[CreatedAt] [datetime2](7) NOT NULL,
+	[AdditionalInfo] [nvarchar](max) NULL,
+ CONSTRAINT [PK_Tasks] PRIMARY KEY CLUSTERED 
+(
+	[Id] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
+GO
+
+ALTER TABLE [dbo].[Tasks]  WITH CHECK ADD  CONSTRAINT [FK_Tasks_Users_UserId] FOREIGN KEY([UserId])
+REFERENCES [dbo].[Users] ([Id])
+GO
+
+ALTER TABLE [dbo].[Tasks] CHECK CONSTRAINT [FK_Tasks_Users_UserId]
+GO
+
+--- Script creacion tabla User
+
+USE [TaskManagementDb]
+GO
+
+/****** Object:  Table [dbo].[Users]    Script Date: 2/24/2026 3:37:24 PM ******/
+SET ANSI_NULLS ON
+GO
+
+SET QUOTED_IDENTIFIER ON
+GO
+
+CREATE TABLE [dbo].[Users](
+	[Id] [uniqueidentifier] NOT NULL,
+	[Name] [nvarchar](100) NOT NULL,
+	[Email] [nvarchar](150) NOT NULL,
+ CONSTRAINT [PK_Users] PRIMARY KEY CLUSTERED 
+(
+	[Id] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+
+
