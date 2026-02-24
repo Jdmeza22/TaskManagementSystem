@@ -5,7 +5,7 @@ using TaskManagement.Domain.Entities;
 using TaskManagement.Infrastructure.Persistence;
 namespace TaskManagement.Infrastructure.Repositories;
 
-public class UserRepository(InMemoryDbContext _context)  : IUserRepository
+public class UserRepository(AppDbContext _context)  : IUserRepository
 {
     public async Task AddAsync(User user)
         => await _context.Users.AddAsync(user);

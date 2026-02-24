@@ -3,10 +3,22 @@ using TaskManagement.Application.Interfaces;
 using TaskManagement.Infrastructure.Persistence;
 using TaskManagement.Infrastructure.Repositories;
 
+
 var builder = WebApplication.CreateBuilder(args);
 
-builder.Services.AddDbContext<InMemoryDbContext>(options =>
-    options.UseInMemoryDatabase("TaskDb"));
+var provider = builder.Configuration["DatabaseProvider"];
+
+if (provider == "SqlServer")
+{
+    builder.Services.AddDbContext<AppDbContext>(options =>
+        options.UseSqlServer(
+            builder.Configuration.GetConnectionString("DefaultConnection")));
+}
+else
+{
+    builder.Services.AddDbContext<AppDbContext>(options =>
+        options.UseInMemoryDatabase("TaskDb"));
+}
 
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<ITaskRepository, TaskRepository>();

@@ -4,7 +4,7 @@ using TaskManagement.Domain.Entities;
 using TaskManagement.Domain.Enums;
 using TaskManagement.Infrastructure.Persistence;
 
-public class TaskRepository(InMemoryDbContext _context) : ITaskRepository
+public class TaskRepository(AppDbContext _context) : ITaskRepository
 {
     
     public async Task AddAsync(TaskItem task)
