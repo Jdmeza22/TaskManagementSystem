@@ -23,6 +23,4 @@ public class TaskRepository(AppDbContext _context) : ITaskRepository
     public async Task<TaskItem?> GetByIdAsync(Guid id)
         => await _context.Tasks.FirstOrDefaultAsync(x => x.Id == id);
 
-    public async Task SaveChangesAsync()
-        => await _context.SaveChangesAsync();
 }

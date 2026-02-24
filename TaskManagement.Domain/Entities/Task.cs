@@ -1,4 +1,5 @@
-﻿using TaskManagement.Domain.Enums;
+﻿using System.ComponentModel.DataAnnotations;
+using TaskManagement.Domain.Enums;
 namespace TaskManagement.Domain.Entities;
 
 public class TaskItem
@@ -15,10 +16,10 @@ public class TaskItem
     public TaskItem(string title, string description, Guid userId)
     {
         if (string.IsNullOrWhiteSpace(title))
-            throw new ArgumentException("Title is required");
+            throw new ValidationException("Title is required");
 
         if (userId == Guid.Empty)
-            throw new ArgumentException("User is required");
+            throw new ValidationException("User is required");
 
         Id = Guid.NewGuid();
         Title = title;

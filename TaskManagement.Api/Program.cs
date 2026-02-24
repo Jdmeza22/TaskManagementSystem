@@ -1,3 +1,5 @@
+using FluentValidation;
+using FluentValidation.AspNetCore;
 using Microsoft.EntityFrameworkCore;
 using TaskManagement.API.Middlewares;
 using TaskManagement.Application.Interfaces;
@@ -20,14 +22,16 @@ else
     builder.Services.AddDbContext<AppDbContext>(options =>
         options.UseInMemoryDatabase("TaskDb"));
 }
-
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<ITaskRepository, TaskRepository>();
-
+builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 builder.Services.AddScoped<UserService>();
 builder.Services.AddScoped<TaskService>();
 
 builder.Services.AddControllers();
+builder.Services.AddFluentValidationAutoValidation();
+builder.Services.AddValidatorsFromAssemblyContaining<CreateUserDtoValidator>();
+builder.Services.AddValidatorsFromAssemblyContaining<CreateTaskDtoValidator>();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 

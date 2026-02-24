@@ -3,21 +3,21 @@ using TaskManagement.Application.Dtos.Responses;
 using TaskManagement.Application.Interfaces;
 using TaskManagement.Domain.Entities;
 
-public class UserService(IUserRepository _repository)
+public class UserService(IUnitOfWork _unitOfWork)
 {
     public async Task<Guid> CreateAsync(CreateUserDto dto)
     {
         User user = new User(dto.Name, dto.Email);
 
-        await _repository.AddAsync(user);
-        await _repository.SaveChangesAsync();
+        await _unitOfWork.Users.AddAsync(user);
+        await _unitOfWork.SaveChangesAsync();
 
         return user.Id;
     }
 
     public async Task<IEnumerable<UserResponseDto>> GetAllAsync()
     {
-        IEnumerable<User> users = await _repository.GetAllAsync();
+        IEnumerable<User> users = await _unitOfWork.Users.GetAllAsync();
 
         return users.Select(u => new UserResponseDto
         {

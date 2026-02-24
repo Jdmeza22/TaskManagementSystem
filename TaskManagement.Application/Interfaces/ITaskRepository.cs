@@ -9,5 +9,4 @@ public interface ITaskRepository
     Task AddAsync(TaskItem task);
     Task<IEnumerable<TaskItem>> GetAllAsync(ETaskStatus? status);
     Task<TaskItem?> GetByIdAsync(Guid id);
-    Task SaveChangesAsync();
 }

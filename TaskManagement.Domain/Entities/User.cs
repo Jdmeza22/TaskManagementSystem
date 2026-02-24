@@ -1,4 +1,6 @@
 ﻿
+using System.ComponentModel.DataAnnotations;
+
 namespace TaskManagement.Domain.Entities;
 
 public class User
@@ -11,10 +13,10 @@ public class User
     public User(string name, string email)
     {
         if (string.IsNullOrWhiteSpace(name))
-            throw new ArgumentException("Name is required");
+            throw new ValidationException("Name is required");
 
         if (string.IsNullOrWhiteSpace(email))
-            throw new ArgumentException("Email is required");
+            throw new ValidationException("Email is required");
 
         Id = Guid.NewGuid();
         Name = name;
