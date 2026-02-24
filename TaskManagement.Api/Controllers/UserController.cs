@@ -9,7 +9,7 @@ public class UsersController(UserService _service) : ControllerBase
     [HttpPost]
     public async Task<IActionResult> Create(CreateUserDto dto)
     {
-        var id = await _service.CreateAsync(dto);
+        Guid id = await _service.CreateAsync(dto);
         return Ok(id);
     }
 

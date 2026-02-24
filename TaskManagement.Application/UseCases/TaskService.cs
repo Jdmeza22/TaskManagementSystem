@@ -1,4 +1,5 @@
 ﻿using TaskManagement.Application.Dtos;
+using TaskManagement.Application.Dtos.Responses;
 using TaskManagement.Application.Interfaces;
 using TaskManagement.Domain.Entities;
 using TaskManagement.Domain.Enums;
@@ -6,11 +7,11 @@ public class TaskService(ITaskRepository _taskRepository, IUserRepository _userR
 {
     public async Task<Guid> CreateAsync(CreateTaskDto dto)
     {
-        var user = await _userRepository.GetByIdAsync(dto.UserId);
+        User user = await _userRepository.GetByIdAsync(dto.UserId);
         if (user is null)
             throw new ArgumentException("User does not exist");
 
-        var task = new TaskItem(dto.Title, dto.Description, dto.UserId);
+        TaskItem task = new TaskItem(dto.Title, dto.Description, dto.UserId);
 
         await _taskRepository.AddAsync(task);
         await _taskRepository.SaveChangesAsync();
@@ -18,12 +19,23 @@ public class TaskService(ITaskRepository _taskRepository, IUserRepository _userR
         return task.Id;
     }
 
-    public async Task<IEnumerable<TaskItem>> GetAllAsync(ETaskStatus? status)
-        => await _taskRepository.GetAllAsync(status);
+    public async Task<IEnumerable<TaskResponseDto>> GetAllAsync(ETaskStatus? status)
+    {
+        IEnumerable<TaskItem> tasks = await _taskRepository.GetAllAsync(status);
+
+        return tasks.Select(t => new TaskResponseDto
+        {
+            Id = t.Id,
+            Title = t.Title,
+            Description = t.Description,
+            Status = t.Status.ToString(),
+            UserId = t.UserId
+        });
+    }
 
     public async Task ChangeStatusAsync(Guid id, ETaskStatus status)
     {
-        var task = await _taskRepository.GetByIdAsync(id)
+        TaskItem task = await _taskRepository.GetByIdAsync(id)
             ?? throw new ArgumentException("Task not found");
 
         task.ChangeStatus(status);
