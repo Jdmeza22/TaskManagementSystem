@@ -1,0 +1,9 @@
+﻿namespace TaskManagement.Application.Dtos.Responses;
+
+public class UserResponseDto
+{
+    public Guid Id { get; init; }
+    public string Name { get; init; } = default!;
+    public string Email { get; init; } = default!;
+    public int TaskCount { get; init; }
+}
