@@ -28,7 +28,7 @@ public class TaskRepository(AppDbContext _context, IConfiguration _configuration
     public async Task<TaskItem?> GetByIdAsync(Guid id)
         => await _context.Tasks.FirstOrDefaultAsync(x => x.Id == id);
 
-    public async Task<List<TaskResponseDto>> GetTasksByUserAsync(Guid userId, string? status = null)
+    public async Task<List<TaskResponseDto>> GetTasksByUserAsync(Guid userId, string status)
     {
         var tasks = new List<TaskResponseDto>();
         var connectionString = _configuration.GetConnectionString("DefaultConnection");

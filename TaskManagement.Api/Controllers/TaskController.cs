@@ -33,9 +33,9 @@ public class TasksController(TaskService _service, IConfiguration _configuration
     }
 
     [HttpGet("by-user")]
-    public async Task<IActionResult> GetTasksByUser(Guid userId, string? status = null)
+    public async Task<IActionResult> GetTasksByUser(Guid userId, ETaskStatus status)
     {
-        var tasks = await _service.GetTasksByUserAsync(userId, status);
+        IList<TaskResponseDto> tasks = await _service.GetTasksByUserAsync(userId, status);
         return Ok(tasks);
     }
 }

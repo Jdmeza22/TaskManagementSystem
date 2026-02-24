@@ -11,5 +11,5 @@ public interface ITaskRepository
     Task<IEnumerable<TaskItem>> GetAllAsync(ETaskStatus? status);
     Task<TaskItem?> GetByIdAsync(Guid id);
 
-    Task<List<TaskResponseDto>> GetTasksByUserAsync(Guid userId, string? status = null);
+    Task<List<TaskResponseDto>> GetTasksByUserAsync(Guid userId, string status);
 }

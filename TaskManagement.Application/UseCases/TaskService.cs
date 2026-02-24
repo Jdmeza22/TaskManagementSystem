@@ -44,8 +44,9 @@ public class TaskService(IUnitOfWork _unitOfWork)
         await _unitOfWork.SaveChangesAsync();
     }
 
-    public async Task<List<TaskResponseDto>> GetTasksByUserAsync(Guid userId, string? status = null)
+    public async Task<List<TaskResponseDto>> GetTasksByUserAsync(Guid userId, ETaskStatus status)
     {
-        return await _unitOfWork.Tasks.GetTasksByUserAsync(userId, status);
+
+        return await _unitOfWork.Tasks.GetTasksByUserAsync(userId, status.ToString());
     }
 }
